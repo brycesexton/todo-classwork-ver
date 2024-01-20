@@ -1,30 +1,49 @@
 const todo = require ('../models/todo')
 
-exports.indexTodo = async (req, res) => {
+exports.index = async (req, res) => {
     try {
         const todos = await todo.find({})
         res.status(200).json(todos)
-} catch (error) {
+}   catch (error) {
         res.status(400).json({ msg: error.message })
 }}
 
-exports.createTodo = async (req, res) => {
+exports.create = async (req, res) => {
 //make a new todo
     try {
         const todo = await Todo.create(req.body)
         res.status(201).json(todo)
 
-  } catch (error) {
+}   catch (error) {
     res.status(400).json({ message: error.message })
   }
 }
-exports.updateTodo = async (req, res) => {
+exports.update = async (req, res) => {
 //update a todo that already exists
+    try {
+    const updatedTodo = await Todo.findOneAndUpdate({ _id: req.params.id},
+        req.body, { new: true })
+}   catch (error) {
+    res.status(400).json({ message: error.message })
+  }
 }
-exports.deleteTodo = async (req, res) => {
-//delete a todo
-} 
+
+exports.destroy = async function(req, res) {
+    // delete a todo that was already made
+    try {
+        const deleted = await Todo.findOneAndDelete({ _id: req.params.id })
+        res.status(200).json({ msg: `Deleted todo with the id ${deleted._id}` })
+    } catch(err) {
+        res.status(400).json({msg: error.message})
+    }
+}
 
 exports.idOfTodo = async (req, res) => {
 //show 1 todo
+try {
+    const foundTodo = await todo.find({})
+    res.status(200).json(foundTodo)
+}   catch (error) {
+    res.status(400).json({ msg: error.message })
+}
 }
